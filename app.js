@@ -42,7 +42,7 @@ app.get('/download/:ytid/:resolution', async (req, res)=>{
 
 // ${req.params.title}
 
-const port = 7000;
+const port = process.env.PORT || 7000;
 app.listen(port, ()=>{
     console.log(`server is runing on http://localhost:${port}/`);
 })

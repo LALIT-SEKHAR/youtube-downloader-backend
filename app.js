@@ -19,7 +19,7 @@ app.get('/getytvideo/:id', async (req, res)=>{
     // res.json({
     //     downloadlink: format.url
     // })
-    console.log(req.params.id);
+    // console.log(req.params.id);
     const url = `https://www.youtube.com/watch?v=${req.params.id}`
     youtubedl.getInfo(url, (err, info) => {
         if (err) {console.log(err)}

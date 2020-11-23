@@ -15,22 +15,39 @@ app.get('/', (req, res)=>{
 app.get('/getytvideo/:id', async (req, res)=>{
 
     const url = await `https://www.youtube.com/watch?v=${req.params.id}`
-    youtubedl.getInfo(url, (err, info) => {
+    youtubedl.getInfo(url, async (err, info) => {
         if (err) {console.log(err)}
+        const AllFormates = await [];
+        info.formats.map(data => {
+            if ((data.format_note !== '144p') && (data.format_note !== 'tiny') && (data.format_note !== '240p')) {
+                AllFormates.push({
+                    "resolution": data.format_note,
+                    "audio": data.acodec,
+                    "Size": `${parseInt(data.filesize/1000000)}mb`,
+                    "exten": data.ext,
+                    "format_id": data.format_id,
+                    "url": data.url,
+                })
+                // console.log(`Video Code: ${data.vcodec} || Video formate: ${data.format_note}`);
+            }
+            // console.log(`resolution: ${data.format_note} || audio: ${data.acodec} || Size: ${data.filesize/1000000}mb || exten: ${data.ext} || exten: ${data.format_id}`);
+        })
+        // console.log(info.formats);
+        // console.log(AllFormates);
+        // AllFormates.sort(function(a, b){return a.Size-b.Size});
         res.json({
             Videolink: info.url,
             title: info.title,
             formate: info.format_id,
             thumbnail: info.thumbnail,
-            description: info.description
+            description: info.description,
+            AllFormates: AllFormates
         })
-        // console.log(info);
     })
 })
 
-app.get('/download/:ytid/:resolution', async (req, res)=>{
-    console.log(req.params.name);
-    res.header('Content-Disposition', `attachment; filename= ${Date.now()}.mp4`);
+app.get('/download/:ytid/:resolution/:ext', async (req, res)=>{
+    res.header('Content-Disposition', `attachment; filename= ${Date.now()}.${req.params.ext}`);
     ytdl(`http://www.youtube.com/watch?v=${req.params.ytid}`,{ format: 'mp4' , quality: req.params.resolution})
     .pipe(res)
 })

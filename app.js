@@ -31,13 +31,25 @@ app.get('/getytvideo/:id', async (req, res)=>{
             description: info.description
         })
     })
+    .catch(err => {
+        console.log(err)
+        res.json({
+            "error": err
+        })
+    })
 })
 
 app.get('/download/:ytid/:resolution', async (req, res)=>{
     console.log(req.params.name);
     res.header('Content-Disposition', `attachment; filename= ${Date.now()}.mp4`);
     ytdl(`http://www.youtube.com/watch?v=${req.params.ytid}`,{ format: 'mp4' , quality: req.params.resolution})
-    .pipe(res);
+    .pipe(res)
+    .catch(err => {
+        console.log(err)
+        res.json({
+            "error": err
+        })
+    })
 })
 
 // ${req.params.title}

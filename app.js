@@ -27,6 +27,7 @@ app.get('/getytvideo/:id', async (req, res)=>{
                     "exten": data.ext,
                     "format_id": data.format_id,
                     "url": data.url,
+                    "height": data.height,
                 })
                 // console.log(`Video Code: ${data.vcodec} || Video formate: ${data.format_note}`);
             }
@@ -34,7 +35,7 @@ app.get('/getytvideo/:id', async (req, res)=>{
         })
         // console.log(info.formats);
         // console.log(AllFormates);
-        // AllFormates.sort(function(a, b){return a.Size-b.Size});
+        AllFormates.sort(function(a, b){return a.height-b.height});
         res.json({
             Videolink: info.url,
             title: info.title,

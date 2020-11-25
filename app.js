@@ -49,9 +49,9 @@ app.get('/getytvideo/:id', async (req, res)=>{
 })
 
 app.get('/download/:title/:ytid/:resolution/:ext', async (req, res)=>{
-    // const name = req.params.title
-    const name = `${req.params.title.replace(/\?/g, "").replace(/\|/g, "").replace(/\"/g, "'").replace(/\*/g, "").replace(/\//g, "").replace(/\\/g, "").replace(/\:/g, "-").replace(/\</g, "").replace(/\>/g, "")}.${req.params.ext}`;
-    console.log(name);
+    // const name = await req.params.title
+    const name = await `${req.params.title.replace(/\?/g, "").replace(/\|/g, "").replace(/\"/g, "'").replace(/\*/g, "").replace(/\//g, "").replace(/\\/g, "").replace(/\:/g, "-").replace(/\</g, "").replace(/\>/g, "")}.${req.params.ext}`;
+    // console.log(name);
     res.header('Content-Disposition', `attachment; filename= "${name}"`);
     ytdl(`http://www.youtube.com/watch?v=${req.params.ytid}`,{ format: req.params.ext , quality: req.params.resolution})
     .pipe(res)

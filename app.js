@@ -31,9 +31,10 @@ app.get('/getytvideo/:id', async (req, res)=>{
                 })
                 // console.log(`Video Code: ${data.vcodec} || Video formate: ${data.format_note}`);
             }
+            // console.log(`Video Code: ${data.acodec} || Video formate: ${data.format_note} || Video formate: ${data.format_id} || ${parseInt(data.filesize/1000000)}mb`);
             // console.log(`resolution: ${data.format_note} || audio: ${data.acodec} || Size: ${data.filesize/1000000}mb || exten: ${data.ext} || exten: ${data.format_id}`);
         })
-        // console.log(info.formats);
+        // console.log(info);
         // console.log(AllFormates);
         AllFormates.sort(function(a, b){return a.height-b.height});
         res.json({
@@ -47,9 +48,12 @@ app.get('/getytvideo/:id', async (req, res)=>{
     })
 })
 
-app.get('/download/:ytid/:resolution/:ext', async (req, res)=>{
-    res.header('Content-Disposition', `attachment; filename= ${Date.now()}.${req.params.ext}`);
-    ytdl(`http://www.youtube.com/watch?v=${req.params.ytid}`,{ format: 'mp4' , quality: req.params.resolution})
+app.get('/download/:title/:ytid/:resolution/:ext', async (req, res)=>{
+    // const name = req.params.title
+    const name = `${req.params.title.replace(/\?/g, "").replace(/\|/g, "").replace(/\"/g, "'").replace(/\*/g, "").replace(/\//g, "").replace(/\\/g, "").replace(/\:/g, "-").replace(/\</g, "").replace(/\>/g, "")}.${req.params.ext}`;
+    console.log(name);
+    res.header('Content-Disposition', `attachment; filename= "${name}"`);
+    ytdl(`http://www.youtube.com/watch?v=${req.params.ytid}`,{ format: req.params.ext , quality: req.params.resolution})
     .pipe(res)
 })
 

@@ -17,12 +17,12 @@ app.get('/getytvideo/:id', async (req, res)=>{
     const url = await `https://www.youtube.com/watch?v=${req.params.id}`
     youtubedl.getInfo(url, async (err, info) => {
         if (err) {
-            res.redirect(req.url); 
-            return console.log(err.stderr)
+            console.log(err);
         }
         const AllFormates = await [];
         info.formats.map(data => {
-            if ((data.format_note !== '144p') && (data.format_note !== 'tiny') && (data.format_note !== '240p')) {
+            // console.log(data);
+            if ((data.format_note !== '144p') && (data.format_note !== 'tiny') && (data.format_note !== '240p') && (data.ext === 'mp4')) {
                 AllFormates.push({
                     "resolution": data.format_note,
                     "audio": data.acodec,
@@ -51,10 +51,12 @@ app.get('/getytvideo/:id', async (req, res)=>{
     })
 })
 
-app.get('/download/:title/:ytid/:resolution/:ext', async (req, res)=>{
-    const name = await `${req.params.title.replace(/\?/g, "").replace(/\|/g, "").replace(/\"/g, "'").replace(/\*/g, "").replace(/\//g, "").replace(/\\/g, "").replace(/\:/g, "-").replace(/\</g, "").replace(/\>/g, "")}.${req.params.ext}`;
+// app.get('/download/:title/:ytid/:resolution/:ext', async (req, res)=>{
+app.get('/download', async (req, res)=>{
+    // console.log(req.query);
+    const name = await `${req.query.name.replace(/\?/g, "").replace(/\|/g, "").replace(/\"/g, "'").replace(/\*/g, "").replace(/\//g, "").replace(/\\/g, "").replace(/\:/g, "-").replace(/\</g, "").replace(/\>/g, "")}.${req.query.formate}`;
     res.header('Content-Disposition', `attachment; filename= "${name}"`);
-    ytdl(`http://www.youtube.com/watch?v=${req.params.ytid}`,{ format: req.params.ext , quality: req.params.resolution})
+    ytdl(`http://www.youtube.com/watch?v=${req.query.id}`,{ format: req.query.formate , quality: req.query.quality})
     .pipe(res)
 })
 

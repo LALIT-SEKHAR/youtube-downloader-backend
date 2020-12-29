@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const ytdl = require('ytdl-core');
 const youtubedl = require('youtube-dl');
+// const fs = require('fs');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -14,6 +15,7 @@ app.get('/', (req, res)=>{
 })
 
 app.get('/getytvideo/:id', async (req, res)=>{
+    // console.log(req.params.id);
     const url = await `https://www.youtube.com/watch?v=${req.params.id}`
     youtubedl.getInfo(url, async (err, info) => {
         if (err) {
@@ -55,9 +57,14 @@ app.get('/getytvideo/:id', async (req, res)=>{
 app.get('/download', async (req, res)=>{
     // console.log(req.query);
     const name = await `${req.query.name.replace(/\?/g, "").replace(/\|/g, "").replace(/\"/g, "'").replace(/\*/g, "").replace(/\//g, "").replace(/\\/g, "").replace(/\:/g, "-").replace(/\</g, "").replace(/\>/g, "")}.${req.query.formate}`;
+    req.query.formate === 'mp3' && res.contentType('audio/mp3');
+    req.query.formate === 'mp4' && res.contentType('video/mp4');
     res.header('Content-Disposition', `attachment; filename= "${name}"`);
+    // console.log(name);
     ytdl(`http://www.youtube.com/watch?v=${req.query.id}`,{ format: req.query.formate , quality: req.query.quality})
     .pipe(res)
+    // const video = youtubedl(`http://www.youtube.com/watch?v=${req.query.id}`, [`-f mp3`],  { cwd: __dirname })
+    // video.pipe(res)
 })
 
 // ${req.params.title}

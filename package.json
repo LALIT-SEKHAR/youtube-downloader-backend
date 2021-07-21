@@ -15,7 +15,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "nodemon": "^2.0.6",
     "youtube-dl": "^3.0.2",
-    "ytdl-core": "^4.0.5"
+    "ytdl-core": "^4.9.0"
   },
   "devDependencies": {},
   "repository": {

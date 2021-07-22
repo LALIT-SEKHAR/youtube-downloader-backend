@@ -10,10 +10,10 @@ const path = require('path')
 
 var dir = 'public';
 var subDirectory = 'public/uploads';
-if (!fs.existsSync(dir)){
-    fs.mkdirSync(dir);
-    fs.mkdirSync(subDirectory)
-}
+// if (!fs.existsSync(dir)){
+//     fs.mkdirSync(dir);
+//     fs.mkdirSync(subDirectory)
+// }
 
 app.use(cors());
 app.use(bodyParser.json());

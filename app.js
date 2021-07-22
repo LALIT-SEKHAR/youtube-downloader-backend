@@ -8,8 +8,8 @@ const fs = require('fs')
 const { exec } = require('child_process')
 const path = require('path')
 
-var dir = 'public';
-var subDirectory = 'public/uploads';
+// var dir = 'public';
+// var subDirectory = 'public/uploads';
 // if (!fs.existsSync(dir)){
 //     fs.mkdirSync(dir);
 //     fs.mkdirSync(subDirectory)
@@ -17,7 +17,7 @@ var subDirectory = 'public/uploads';
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static('public'))
+// app.use(express.static('public'))
 
 
 app.get('/', (req, res)=>{

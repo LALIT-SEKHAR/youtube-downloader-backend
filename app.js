@@ -156,6 +156,6 @@ app.get('/download', async (req, res)=>{
 // ${req.params.title}
 
 const port = process.env.PORT || 7000;
-app.listen(port, ()=>{
-    console.log(`server is runing on http://localhost:${port}/`);
+app.listen(port, "0.0.0.0", ()=>{
+    console.log(`server is runing on http://localhost:${port}/`,app.get('env'));
 })
